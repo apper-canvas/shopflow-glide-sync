@@ -10,8 +10,9 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  const handleQuickAdd = (e) => {
+const handleQuickAdd = (e) => {
     e.stopPropagation();
+    e.preventDefault();
     const defaultSize = product.sizes && product.sizes.length > 0 ? product.sizes[0] : null;
     const defaultColor = product.colors && product.colors.length > 0 ? product.colors[0] : null;
     addToCart(product, defaultSize, defaultColor);
