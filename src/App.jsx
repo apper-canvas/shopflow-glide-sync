@@ -1,8 +1,8 @@
-import React, { Suspense, lazy } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { CartProvider } from "@/hooks/useCart";
 import "react-toastify/dist/ReactToastify.css";
+import React, { Suspense, lazy } from "react";
+import { RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { router } from "./router/index.jsx";
 
 // Lazy load page components
 const ProductCatalog = lazy(() => import("@/components/pages/ProductCatalog"));
@@ -10,8 +10,6 @@ const ProductDetail = lazy(() => import("@/components/pages/ProductDetail"));
 const Checkout = lazy(() => import("@/components/pages/Checkout"));
 const OrderConfirmation = lazy(() => import("@/components/pages/OrderConfirmation"));
 const Layout = lazy(() => import("@/components/organisms/Layout"));
-
-// NotFound component - needs to be created
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
 
 // Suspense fallback component
@@ -26,54 +24,14 @@ const SuspenseFallback = () => (
   </div>
 );
 
-// Main routes configuration
-const mainRoutes = [
-  {
-    path: "",
-    index: true,
-    element: <Suspense fallback={<SuspenseFallback />}><ProductCatalog /></Suspense>
-  },
-  {
-    path: "category/:category",
-    element: <Suspense fallback={<SuspenseFallback />}><ProductCatalog /></Suspense>
-  },
-  {
-    path: "product/:id",
-    element: <Suspense fallback={<SuspenseFallback />}><ProductDetail /></Suspense>
-  },
-  {
-    path: "checkout",
-    element: <Suspense fallback={<SuspenseFallback />}><Checkout /></Suspense>
-  },
-  {
-    path: "order-confirmation",
-    element: <Suspense fallback={<SuspenseFallback />}><OrderConfirmation /></Suspense>
-  },
-  {
-    path: "*",
-    element: <Suspense fallback={<SuspenseFallback />}><NotFound /></Suspense>
-  }
-];
-
-// Router configuration
-const routes = [
-  {
-    path: "/",
-    element: <Suspense fallback={<SuspenseFallback />}><Layout /></Suspense>,
-    children: [...mainRoutes]
-  }
-];
-
-export const router = createBrowserRouter(routes);
-
 // Main App component
 function App() {
   return (
-    <CartProvider>
+    <>
       <RouterProvider router={router} />
       <ToastContainer
         position="top-right"
-        autoClose={3000}
+        autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -81,9 +39,8 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
       />
-    </CartProvider>
+    </>
   );
 }
 
